@@ -1,0 +1,39 @@
+{
+  "annotations": {
+    "changelogDate": "20241201032247"
+  },
+  "applications": ["filemasterpro"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "contactEmail",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "contactPhone",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "address",
+      "fieldType": "String"
+    }
+  ],
+  "name": "Vendor",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "file",
+      "otherEntityRelationshipName": "vendor",
+      "relationshipName": "file",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

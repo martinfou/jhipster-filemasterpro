@@ -1,0 +1,205 @@
+<div>
+  <h2 id="page-heading" data-cy="FileHeading">
+    <span jhiTranslate="filemasterproApp.file.home.title">Files</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="filemasterproApp.file.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-file"
+        [routerLink]="['/file/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="filemasterproApp.file.home.createLabel">Create a new File</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (files?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="filemasterproApp.file.home.notFound">No Files found</span>
+    </div>
+  }
+
+  @if (files && files.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="name">
+              <div class="d-flex">
+                <span jhiTranslate="filemasterproApp.file.name">Name</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="type">
+              <div class="d-flex">
+                <span jhiTranslate="filemasterproApp.file.type">Type</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="amount">
+              <div class="d-flex">
+                <span jhiTranslate="filemasterproApp.file.amount">Amount</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="fileDate">
+              <div class="d-flex">
+                <span jhiTranslate="filemasterproApp.file.fileDate">File Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="description">
+              <div class="d-flex">
+                <span jhiTranslate="filemasterproApp.file.description">Description</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="hash">
+              <div class="d-flex">
+                <span jhiTranslate="filemasterproApp.file.hash">Hash</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="fileSize">
+              <div class="d-flex">
+                <span jhiTranslate="filemasterproApp.file.fileSize">File Size</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="path">
+              <div class="d-flex">
+                <span jhiTranslate="filemasterproApp.file.path">Path</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="rawFile">
+              <div class="d-flex">
+                <span jhiTranslate="filemasterproApp.file.rawFile">Raw File</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="uploadedDate">
+              <div class="d-flex">
+                <span jhiTranslate="filemasterproApp.file.uploadedDate">Uploaded Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="project.id">
+              <div class="d-flex">
+                <span jhiTranslate="filemasterproApp.file.project">Project</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="vendor.id">
+              <div class="d-flex">
+                <span jhiTranslate="filemasterproApp.file.vendor">Vendor</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (file of files; track trackId(file)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/file', file.id, 'view']">{{ file.id }}</a>
+              </td>
+              <td>{{ file.name }}</td>
+              <td [jhiTranslate]="'filemasterproApp.FileType.' + (file.type ?? 'null')">
+                {{ { null: '', INVOICE: 'INVOICE', DOCUMENT: 'DOCUMENT' }[file.type ?? 'null'] }}
+              </td>
+              <td>{{ file.amount }}</td>
+              <td>{{ file.fileDate | formatMediumDate }}</td>
+              <td>{{ file.description }}</td>
+              <td>{{ file.hash }}</td>
+              <td>{{ file.fileSize }}</td>
+              <td>{{ file.path }}</td>
+              <td>{{ file.rawFile }}</td>
+              <td>{{ file.uploadedDate | formatMediumDatetime }}</td>
+              <td>
+                @if (file.project) {
+                  <div>
+                    <a [routerLink]="['/project', file.project.id, 'view']">{{ file.project.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (file.vendor) {
+                  <div>
+                    <a [routerLink]="['/vendor', file.vendor.id, 'view']">{{ file.vendor.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/file', file.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                  </a>
+
+                  <a [routerLink]="['/file', file.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(file)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (files && files.length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

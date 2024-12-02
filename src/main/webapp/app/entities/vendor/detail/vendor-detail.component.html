@@ -1,0 +1,46 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (vendor(); as vendorRef) {
+      <div>
+        <h2 data-cy="vendorDetailsHeading"><span jhiTranslate="filemasterproApp.vendor.detail.title">Vendor</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ vendorRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="filemasterproApp.vendor.name">Name</span></dt>
+          <dd>
+            <span>{{ vendorRef.name }}</span>
+          </dd>
+          <dt><span jhiTranslate="filemasterproApp.vendor.contactEmail">Contact Email</span></dt>
+          <dd>
+            <span>{{ vendorRef.contactEmail }}</span>
+          </dd>
+          <dt><span jhiTranslate="filemasterproApp.vendor.contactPhone">Contact Phone</span></dt>
+          <dd>
+            <span>{{ vendorRef.contactPhone }}</span>
+          </dd>
+          <dt><span jhiTranslate="filemasterproApp.vendor.address">Address</span></dt>
+          <dd>
+            <span>{{ vendorRef.address }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/vendor', vendorRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

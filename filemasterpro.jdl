@@ -1,0 +1,75 @@
+// Application configuration
+application {
+  config {
+    baseName filemasterpro,
+    packageName com.compica.filemasterpro,
+    applicationType monolith,
+    authenticationType jwt,
+    databaseType sql,
+    devDatabaseType postgresql,
+    prodDatabaseType postgresql,
+    buildTool maven,
+    enableHibernateCache true,
+    clientFramework angular,
+    clientTheme flatly,
+    testFrameworks [protractor, cucumber],
+    languages [en, fr],
+    serverPort 8001,
+    skipUserManagement false,
+    skipClient false,
+    skipServer false,
+    enableSwaggerCodegen false
+  }
+
+  entities Project, File, Vendor
+}
+
+// Define the Project entity
+entity Project {
+    name String required,         // Project name
+    description String,           // Project description
+    createdDate Instant, // When the project was created
+    lastUpdatedDate Instant       // When the project was last updated
+}
+
+// Define the File entity (general entity for files)
+entity File {
+    name String required,    	// File name
+    type FileType required,    	// Type of the file (Invoice, Document,etc.)
+    amount BigDecimal,    
+    fileDate LocalDate,   		// Date associated with the file
+    description String,
+    hash String ,         		// File hash for uniqueness
+    fileSize Long ,           	// File size in bytes
+    path String ,         		// File path
+    rawFile Blob,
+    uploadedDate Instant  // When the file was uploaded
+}
+
+// Enum for File type (Invoice, Document, etc.)
+enum FileType {
+    INVOICE,
+    DOCUMENT
+}
+
+
+// Define the Vendor entity
+entity Vendor {
+    name String required,           // Vendor name
+    contactEmail String,            // Contact email
+    contactPhone String,            // Contact phone number
+    address String                  // Vendor address
+}
+
+// Relationships
+relationship ManyToOne {
+    File{project} to Project{files}      // A file belongs to a single project; a project can have many files
+    File{vendor} to Vendor{file}    	// An File is associated with a single vendor; a vendor can have many files
+}
+
+
+// Validation logic (to be enforced in the service layer, not in JDL)
+service * with serviceClass
+dto * with mapstruct
+paginate File, Project, Vendor with pagination
+

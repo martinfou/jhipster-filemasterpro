@@ -1,0 +1,28 @@
+{
+  "generator-jhipster": {
+    "applicationType": "monolith",
+    "authenticationType": "jwt",
+    "baseName": "filemasterpro",
+    "buildTool": "maven",
+    "clientFramework": "angular",
+    "clientTheme": "flatly",
+    "databaseType": "sql",
+    "devDatabaseType": "postgresql",
+    "devServerPort": 4200,
+    "enableHibernateCache": true,
+    "enableSwaggerCodegen": false,
+    "entities": ["Project", "File", "Vendor"],
+    "jhipsterVersion": "8.7.3",
+    "jwtSecretKey": "ODllNDM0MzRmM2UwMGNkZGRkNGU2ZmRkNzA2ODZlMjhiMWE2MDVjYjk5OWE5ODcxNmJmMzY2YjBmYWZlNWZlZWQ4OWFhYmYyZGVmYmY0OWVjZTI4MDJkN2YyNmJkN2U1YWViNGRkNzY4YTZkOGU0MzdlYjZiNGE2MGNkMzc4NTA=",
+    "languages": ["en", "fr"],
+    "lastLiquibaseTimestamp": 1733023367000,
+    "nativeLanguage": "en",
+    "packageName": "com.compica.filemasterpro",
+    "prodDatabaseType": "postgresql",
+    "serverPort": "8001",
+    "skipClient": false,
+    "skipServer": false,
+    "skipUserManagement": false,
+    "testFrameworks": ["protractor", "cucumber"]
+  }
+}

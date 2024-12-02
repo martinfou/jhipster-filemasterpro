@@ -1,0 +1,9 @@
+{
+  "filemasterproApp": {
+    "FileType": {
+      "null": "",
+      "INVOICE": "INVOICE",
+      "DOCUMENT": "DOCUMENT"
+    }
+  }
+}

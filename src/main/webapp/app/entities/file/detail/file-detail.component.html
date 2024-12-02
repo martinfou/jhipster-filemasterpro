@@ -1,0 +1,88 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (file(); as fileRef) {
+      <div>
+        <h2 data-cy="fileDetailsHeading"><span jhiTranslate="filemasterproApp.file.detail.title">File</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ fileRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="filemasterproApp.file.name">Name</span></dt>
+          <dd>
+            <span>{{ fileRef.name }}</span>
+          </dd>
+          <dt><span jhiTranslate="filemasterproApp.file.type">Type</span></dt>
+          <dd>
+            <span [jhiTranslate]="'filemasterproApp.FileType.' + (fileRef.type ?? 'null')">{{
+              { null: '', INVOICE: 'INVOICE', DOCUMENT: 'DOCUMENT' }[fileRef.type ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="filemasterproApp.file.amount">Amount</span></dt>
+          <dd>
+            <span>{{ fileRef.amount }}</span>
+          </dd>
+          <dt><span jhiTranslate="filemasterproApp.file.fileDate">File Date</span></dt>
+          <dd>
+            <span>{{ fileRef.fileDate | formatMediumDate }}</span>
+          </dd>
+          <dt><span jhiTranslate="filemasterproApp.file.description">Description</span></dt>
+          <dd>
+            <span>{{ fileRef.description }}</span>
+          </dd>
+          <dt><span jhiTranslate="filemasterproApp.file.hash">Hash</span></dt>
+          <dd>
+            <span>{{ fileRef.hash }}</span>
+          </dd>
+          <dt><span jhiTranslate="filemasterproApp.file.fileSize">File Size</span></dt>
+          <dd>
+            <span>{{ fileRef.fileSize }}</span>
+          </dd>
+          <dt><span jhiTranslate="filemasterproApp.file.path">Path</span></dt>
+          <dd>
+            <span>{{ fileRef.path }}</span>
+          </dd>
+          <dt><span jhiTranslate="filemasterproApp.file.rawFile">Raw File</span></dt>
+          <dd>
+            <span>{{ fileRef.rawFile }}</span>
+          </dd>
+          <dt><span jhiTranslate="filemasterproApp.file.uploadedDate">Uploaded Date</span></dt>
+          <dd>
+            <span>{{ fileRef.uploadedDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="filemasterproApp.file.project">Project</span></dt>
+          <dd>
+            @if (file()!.project) {
+              <div>
+                <a [routerLink]="['/project', file()!.project?.id, 'view']">{{ fileRef.project?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="filemasterproApp.file.vendor">Vendor</span></dt>
+          <dd>
+            @if (file()!.vendor) {
+              <div>
+                <a [routerLink]="['/vendor', file()!.vendor?.id, 'view']">{{ fileRef.vendor?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/file', fileRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>
