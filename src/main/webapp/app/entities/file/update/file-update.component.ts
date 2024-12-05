@@ -19,6 +19,7 @@ import { FileService } from '../service/file.service';
 import { IFile } from '../file.model';
 import { FileFormGroup, FileFormService } from './file-form.service';
 
+const suffixUnderscore = '_';
 @Component({
   standalone: true,
   selector: 'jhi-file-update',
@@ -29,6 +30,13 @@ export class FileUpdateComponent implements OnInit {
   isSaving = false;
   file: IFile | null = null;
   fileTypeValues = Object.keys(FileType);
+  formState = {
+    fileType: '',
+    projectType: '',
+    date: '',
+    vendor: '',
+    amount: '',
+  };
 
   projectsSharedCollection: IProject[] = [];
   vendorsSharedCollection: IVendor[] = [];
@@ -49,6 +57,31 @@ export class FileUpdateComponent implements OnInit {
   compareVendor = (o1: IVendor | null, o2: IVendor | null): boolean => this.vendorService.compareVendor(o1, o2);
 
   ngOnInit(): void {
+    this.editForm.get('type')?.valueChanges.subscribe(value => {
+      this.formState.fileType = value ?? '';
+      this.updateNameField();
+    });
+
+    this.editForm.get('project')?.valueChanges.subscribe(value => {
+      this.formState.projectType = (value as IProject).name ?? '';
+      this.updateNameField();
+    });
+
+    this.editForm.get('fileDate')?.valueChanges.subscribe(value => {
+      this.formState.date = value ? value.format('YYYY-MM-DD') : '';
+      this.updateNameField();
+    });
+
+    this.editForm.get('vendor')?.valueChanges.subscribe(value => {
+      this.formState.vendor = (value as IVendor).name ?? '';
+      this.updateNameField();
+    });
+
+    this.editForm.get('amount')?.valueChanges.subscribe(value => {
+      this.formState.amount = value?.toString() ?? '';
+      this.updateNameField();
+    });
+
     this.activatedRoute.data.subscribe(({ file }) => {
       this.file = file;
       if (file) {
@@ -101,6 +134,19 @@ export class FileUpdateComponent implements OnInit {
 
   protected onSaveError(): void {
     // Api for inheritance.
+  }
+
+  protected updateNameField(): void {
+    this.editForm.patchValue({
+      name:
+        this.formState.fileType.toLowerCase() +
+        suffixUnderscore +
+        this.formState.projectType +
+        suffixUnderscore +
+        this.formState.date +
+        suffixUnderscore +
+        this.formState.vendor,
+    });
   }
 
   protected onSaveFinalize(): void {
