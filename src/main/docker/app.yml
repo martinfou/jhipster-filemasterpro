@@ -2,7 +2,7 @@
 name: filemasterpro
 services:
   app:
-    image: filemasterpro
+    image: martinfou/filemasterpro
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=prod,api-docs
@@ -10,7 +10,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresql:5432/filemasterpro
       - SPRING_LIQUIBASE_URL=jdbc:postgresql://postgresql:5432/filemasterpro
     ports:
-      - 127.0.0.1:8001:8001
+      - 8001:8001
     healthcheck:
       test:
         - CMD
