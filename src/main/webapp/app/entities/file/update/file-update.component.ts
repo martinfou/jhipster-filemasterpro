@@ -19,7 +19,8 @@ import { FileService } from '../service/file.service';
 import { IFile } from '../file.model';
 import { FileFormGroup, FileFormService } from './file-form.service';
 
-const suffixUnderscore = '_';
+const SUFFIX_UNDERSCORE = '_';
+const CURRENCY = '$';
 @Component({
   standalone: true,
   selector: 'jhi-file-update',
@@ -36,6 +37,7 @@ export class FileUpdateComponent implements OnInit {
     date: '',
     vendor: '',
     amount: '',
+    description: '',
   };
 
   projectsSharedCollection: IProject[] = [];
@@ -79,6 +81,11 @@ export class FileUpdateComponent implements OnInit {
 
     this.editForm.get('amount')?.valueChanges.subscribe(value => {
       this.formState.amount = value?.toString() ?? '';
+      this.updateNameField();
+    });
+
+    this.editForm.get('description')?.valueChanges.subscribe(value => {
+      this.formState.description = value ?? '';
       this.updateNameField();
     });
 
@@ -138,15 +145,44 @@ export class FileUpdateComponent implements OnInit {
 
   protected updateNameField(): void {
     this.editForm.patchValue({
-      name:
-        this.formState.fileType.toLowerCase() +
-        suffixUnderscore +
-        this.formState.projectType +
-        suffixUnderscore +
-        this.formState.date +
-        suffixUnderscore +
-        this.formState.vendor,
+      name: this.getFileType() + this.getProjectType() + this.getDate() + this.getVendor() + this.getAmount() + this.formState.description,
     });
+  }
+
+  protected getFileType(): string {
+    if (!this.formState.fileType) {
+      return '';
+    }
+    return this.formState.fileType.toLowerCase() + SUFFIX_UNDERSCORE;
+  }
+
+  protected getProjectType(): string {
+    if (!this.formState.projectType) {
+      return '';
+    }
+    return this.formState.projectType + SUFFIX_UNDERSCORE;
+  }
+
+  protected getDate(): string {
+    if (!this.formState.date) {
+      return '';
+    }
+    return this.formState.date + SUFFIX_UNDERSCORE;
+  }
+
+  protected getVendor(): string {
+    if (!this.formState.vendor) {
+      return '';
+    }
+    return this.formState.vendor + SUFFIX_UNDERSCORE;
+  }
+
+  protected getAmount(): string {
+    if (!this.formState.amount) {
+      return '';
+    }
+    const suffix = !this.formState.description ? '' : SUFFIX_UNDERSCORE;
+    return CURRENCY + this.formState.amount + suffix;
   }
 
   protected onSaveFinalize(): void {

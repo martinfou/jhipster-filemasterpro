@@ -80,7 +80,7 @@
             >
               <option [ngValue]="null"></option>
               @for (projectOption of projectsSharedCollection; track $index) {
-                <option [ngValue]="projectOption">{{ projectOption.description }}</option>
+                <option [ngValue]="projectOption">{{ projectOption.name }}</option>
               }
             </select>
           </div>
